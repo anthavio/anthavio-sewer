@@ -84,6 +84,7 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
 			<version>${tomcat.version}</version>
+			<optional>true</optional>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.tomcat</groupId>
