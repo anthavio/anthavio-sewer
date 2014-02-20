@@ -15,7 +15,7 @@
 	
 	<name>anthavio-sewer</name>
 	
-	<description>Annthavio Server Embedder</description>
+	<description>Anthavio Server Embedder</description>
 	
 	<properties>
 		<jetty6.version>6.1.26</jetty6.version>
@@ -32,7 +32,7 @@
 			<version>1.7.5</version>
 		</dependency>
 		
-		<!-- Jetty 8 -->
+		<!-- Jetty 7/8/9 -->
 		
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
