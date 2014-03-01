@@ -78,7 +78,7 @@
 			<optional>true</optional>
 		</dependency>
 		
-		<!-- Tomcat 7 -->
+		<!-- Tomcat 7+ -->
 		
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -91,6 +91,13 @@
   				<artifactId>tomcat-juli</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.grizzly</groupId>
+			<artifactId>grizzly-http-servlet</artifactId>
+			<version>2.3.11</version>
+			<optional>true</optional>
 		</dependency>
 		
 		<!-- Junit and TestNG integrations. Use reasonably old versions -->
