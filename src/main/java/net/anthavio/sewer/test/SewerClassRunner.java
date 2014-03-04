@@ -2,7 +2,6 @@ package net.anthavio.sewer.test;
 
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerInstanceManager;
-import net.anthavio.sewer.ServerLifeCycle;
 import net.anthavio.sewer.ServerMetadata;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -45,7 +44,7 @@ public class SewerClassRunner extends BlockJUnit4ClassRunner {
 
 	public SewerClassRunner(Class<?> testClass) throws InitializationError {
 		super(testClass);
-		metadata = ServerLifeCycle.getServerMetaData(testClass);
+		metadata = CallbackSupport.getServerMetaData(testClass);
 	}
 
 	/**
@@ -56,7 +55,7 @@ public class SewerClassRunner extends BlockJUnit4ClassRunner {
 		for (int i = 0; i < metadata.length; ++i) {
 			ServerInstance server = manager.borrowServer(metadata[i]);
 		}
-		ServerLifeCycle.injectResources(target, metadata);
+		CallbackSupport.injectResources(target, metadata);
 		return super.withBefores(method, target, statement);
 	}
 

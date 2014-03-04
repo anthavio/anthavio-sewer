@@ -3,8 +3,6 @@ package net.anthavio.sewer.test;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import net.anthavio.sewer.ServerLifeCycle;
-
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.IMethodInstance;
@@ -33,21 +31,13 @@ import org.testng.ITestResult;
  * @author martin.vanek
  *
  */
-public class SewerTestNgListener extends ServerLifeCycle implements IMethodInterceptor, IInvokedMethodListener {
+public class SewerTestNgListener extends CallbackSupport implements IMethodInterceptor, IInvokedMethodListener {
 
 	@Override
 	public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
 		if (methods.size() != 0) {
 			IMethodInstance imethod = methods.get(0);
 			super.beforeTestClass(imethod.getMethod().getTestClass().getRealClass());
-			/*
-			//Object instance = imethod.getInstance();
-			Class<?> testClass = imethod.getMethod().getTestClass().getRealClass();
-			ServerMetadata[] serverSetups = JettyLoaderBase.getServerMetaData(testClass);
-			for (int i = 0; i < serverSetups.length; ++i) {
-				jim.checkoutServer(serverSetups[i]);
-			}
-			*/
 		}
 		return methods;
 	}

@@ -1,22 +1,28 @@
-package net.anthavio.sewer;
+package net.anthavio.sewer.test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.anthavio.sewer.ServerConfig;
+import net.anthavio.sewer.ServerConfigs;
+import net.anthavio.sewer.ServerInstance;
+import net.anthavio.sewer.ServerInstanceManager;
+import net.anthavio.sewer.ServerMetadata;
+import net.anthavio.sewer.ServerPort;
+
 /**
- * Every framework has it's own callback methods.
+ * Every test framework has it's own callback methods. 
+ * This class provides support for three different moments in test lifecycle   
  * 
  * @author martin.vanek
  *
  */
-public class ServerLifeCycle {
+public class CallbackSupport {
 
 	protected ServerInstanceManager manager = ServerInstanceManager.INSTANCE;
 
-	//To prevent nullpointer exception when initialization fails, but other lifecycle methods are still called
-	//SewerSpringListener does this... 
 	protected ServerMetadata[] metadatas;
 
 	private boolean prepared = false;

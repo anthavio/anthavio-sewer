@@ -1,7 +1,5 @@
 package net.anthavio.sewer.test;
 
-import net.anthavio.sewer.ServerLifeCycle;
-
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 
@@ -29,16 +27,11 @@ import org.springframework.test.context.TestExecutionListener;
  * @author martin.vanek
  *
  */
-public class SewerSpringListener extends ServerLifeCycle implements TestExecutionListener {
-
-	private boolean prepared = false;
-
-	private boolean started = false;
+public class SewerSpringListener extends CallbackSupport implements TestExecutionListener {
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
 		super.beforeTestClass(testContext.getTestClass());
-		prepared = true;
 	}
 
 	@Override
@@ -47,17 +40,12 @@ public class SewerSpringListener extends ServerLifeCycle implements TestExecutio
 
 	@Override
 	public void beforeTestMethod(TestContext testContext) throws Exception {
-		if (prepared) {
-			super.beforeTestMethod(testContext.getTestInstance(), testContext.getTestMethod());
-		}
-		started = true;
+		super.beforeTestMethod(testContext.getTestInstance(), testContext.getTestMethod());
 	}
 
 	@Override
 	public void afterTestMethod(TestContext testContext) throws Exception {
-		if (started) {
-			super.afterTestMethod();
-		}
+		super.afterTestMethod();
 	}
 
 	@Override
