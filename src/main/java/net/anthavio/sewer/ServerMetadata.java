@@ -72,7 +72,7 @@ public class ServerMetadata {
 
 	@Override
 	public String toString() {
-		return type + " " + serverHome + " " + port + " " + Arrays.asList(configs) + " " + cache;
+		return type + " " + serverHome + " " + port + " " + (configs != null ? Arrays.asList(configs) : "" + " ") + cache;
 	}
 
 	@Override

@@ -112,7 +112,7 @@ public class JettyWrapper implements ServerInstance {
 					} else if (exists(jettyHome + "/etc/" + config)) {
 						this.configs[i] = jettyHome + "/etc/" + config;
 					} else {
-						throw new IllegalArgumentException("Config file " + configs[i] + " cannot be located inside " + jettyHome);
+						throw new IllegalArgumentException("Config file " + configs[i] + " not found in " + jettyHome);
 					}
 				}
 			}

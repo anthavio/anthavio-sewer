@@ -26,48 +26,27 @@ import org.junit.runners.model.Statement;
  * 
  * }
  * 
- * Similar can be done with @BeforeClass and @AfterClass annotations, but this is more fun
+ * Similar can be done with @BeforeClass and @AfterClass annotations, but this just easier
  * 
- * TODO JUnit withBefores and withAfters are marked to be removed, new Rules should be used instead
+ * JUnit withBefores and withAfters are marked as deprecated looong ago 
+ * @Rule should be used instead in junit 4.9 and later
  * 
  * @author martin.vanek
+ * 
+ * @deprecated use SewerRule instead
  *
  */
+@Deprecated
 public class SewerClassRunner extends BlockJUnit4ClassRunner {
 
-	private ServerMetadata[] metadata;
+	private final ServerMetadata[] metadata;
 
-	private ServerInstanceManager manager = ServerInstanceManager.INSTANCE;
+	private final ServerInstanceManager manager = ServerInstanceManager.INSTANCE;
 
 	public SewerClassRunner(Class<?> testClass) throws InitializationError {
 		super(testClass);
-		//XXX what happends if there is multiple test classes?!?!? serverSetups will get overwritten????
 		metadata = ServerLifeCycle.getServerMetaData(testClass);
 	}
-
-	/*
-		protected Object createTest() throws Exception {
-			Object testInstance = super.createTest();
-			return testInstance;
-		}
-	*/
-	/*
-	@Override
-	protected Statement withBeforeClasses(Statement statement) {
-		//JUnit requires @BeforeClasses annotated method to be static - they can only access static fields... 
-		Statement superResponse = super.withBeforeClasses(statement);
-		return superResponse;
-	}
-	*/
-	/**
-	 * Runs all @BeforeClass and @AfterClass
-	 * 
-	 * see http://stackoverflow.com/questions/15141593/custom-blockjunit4classrunner-which-runs-test-suite-set-number-of-times
-	@Override
-	protected Statement classBlock(RunNotifier notifier) {
-		return super.classBlock(notifier);
-	}
-	 */
 
 	/**
 	 * Runs all @Before (method)
@@ -88,6 +67,32 @@ public class SewerClassRunner extends BlockJUnit4ClassRunner {
 		}
 		return super.withAfters(method, target, statement);
 	}
+
+	/*
+	protected Object createTest() throws Exception {
+		Object testInstance = super.createTest();
+		return testInstance;
+	}
+	*/
+
+	/*
+	@Override
+	protected Statement withBeforeClasses(Statement statement) {
+		//JUnit requires @BeforeClasses annotated method to be static - they can only access static fields... 
+		Statement superResponse = super.withBeforeClasses(statement);
+		return superResponse;
+	}
+	*/
+
+	/**
+	 * Runs all @BeforeClass and @AfterClass
+	 * 
+	 * see http://stackoverflow.com/questions/15141593/custom-blockjunit4classrunner-which-runs-test-suite-set-number-of-times
+	@Override
+	protected Statement classBlock(RunNotifier notifier) {
+		return super.classBlock(notifier);
+	}
+	 */
 	/*
 		@Override
 		protected Statement withAfterClasses(Statement statement) {
