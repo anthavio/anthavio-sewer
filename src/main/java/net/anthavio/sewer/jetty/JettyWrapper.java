@@ -10,7 +10,7 @@ import java.util.Map;
 
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerMetadata;
-import net.anthavio.sewer.ServerMetadata.CacheInstance;
+import net.anthavio.sewer.ServerMetadata.CacheScope;
 import net.anthavio.sewer.ServerType;
 
 import org.eclipse.jetty.server.Connector;
@@ -123,7 +123,7 @@ public class JettyWrapper implements ServerInstance {
 			//System.setProperty("jetty.port", String.valueOf(port));
 			properties.put("jetty.port", String.valueOf(port));
 		}
-		this.metadata = new ServerMetadata(ServerType.JETTY, jettyHome, port, configs, CacheInstance.ALLWAYS);
+		this.metadata = new ServerMetadata(ServerType.JETTY, jettyHome, port, configs, CacheScope.JVM);
 		this.server = configure(this.configs);
 
 	}

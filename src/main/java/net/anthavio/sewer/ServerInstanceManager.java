@@ -2,9 +2,8 @@ package net.anthavio.sewer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import net.anthavio.sewer.ServerMetadata.CacheInstance;
+import net.anthavio.sewer.ServerMetadata.CacheScope;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,40 +27,41 @@ public class ServerInstanceManager {
 	 * Build concrete server instance according ServerInstanceData is contract for concrete ServerInstanceManager
 	 */
 	//protected abstract ServerInstance newServerInstance(ServerMetadata setup);
-
-	private void housekeeping(ServerMetadata newSetup) {
-		Set<ServerMetadata> keySet = cache.keySet();
-		for (ServerMetadata oldSetup : keySet) {
-			ServerInstance server = null;
-			switch (oldSetup.getCache()) {
-			case NEVER:
-				//remove abandoned entries
-				server = cache.remove(oldSetup);
-				break;
-			case CHANGE:
-				//remove change driven entries
-				if (!newSetup.equals(oldSetup)) {
-					//XXX this will never work...
+	/*
+		private void housekeeping(ServerMetadata newSetup) {
+			Set<ServerMetadata> keySet = cache.keySet();
+			for (ServerMetadata oldSetup : keySet) {
+				ServerInstance server = null;
+				switch (oldSetup.getCache()) {
+				case NEVER:
+					//remove abandoned entries
 					server = cache.remove(oldSetup);
-				}
-				break;
-			}
-			if (server != null) {
-				logger.debug("Cache remove " + oldSetup);
-				try {
-					if (server.isStarted()) {
-						server.stop();
+					break;
+				case CHANGE:
+					//remove change driven entries
+					if (!newSetup.equals(oldSetup)) {
+						//XXX this will never work...
+						server = cache.remove(oldSetup);
 					}
-				} catch (Exception x) {
-					logger.warn("Exception while stopping server " + x);
+					break;
+				}
+				if (server != null) {
+					logger.debug("Cache remove " + oldSetup);
+					try {
+						if (server.isStarted()) {
+							server.stop();
+						}
+					} catch (Exception x) {
+						logger.warn("Exception while stopping server " + x);
+					}
 				}
 			}
 		}
-	}
-
+	*/
 	public ServerInstance borrowServer(ServerMetadata setup) {
+		logger.debug("server borrow " + setup);
 		//houskeeping first...
-		housekeeping(setup);
+		//housekeeping(setup);
 
 		ServerInstance server = cache.get(setup);
 		if (server == null) {
@@ -81,11 +81,12 @@ public class ServerInstanceManager {
 	 * @return 
 	 */
 	public ServerInstance returnServer(ServerMetadata setup) {
+		logger.debug("server return " + setup);
 		ServerInstance server = cache.get(setup);
 		if (server == null) {
 			throw new IllegalArgumentException("Server not found in cache " + setup);
 		}
-		if (setup.getCache() == CacheInstance.NEVER) {
+		if (setup.getCache() == CacheScope.METHOD) {
 			cache.remove(setup);
 			try {
 				logger.debug("Cache remove " + setup);

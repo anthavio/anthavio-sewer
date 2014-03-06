@@ -9,10 +9,10 @@ import java.util.Arrays;
  */
 public class ServerMetadata {
 
-	public static enum CacheInstance {
-		ALLWAYS, //cache forever
+	public static enum CacheScope {
+		JVM, //cache forever
 		CLASS, //ceche between methods (tests) of same class
-		NEVER, //don't cache even between methods (tests)
+		METHOD, //don't cache even between methods (tests)
 		CHANGE; //cache until different instance is requested
 	}
 
@@ -24,13 +24,13 @@ public class ServerMetadata {
 
 	private final String[] configs;
 
-	private final CacheInstance cache;
+	private final CacheScope cache;
 
 	public ServerMetadata(ServerConfig annotation) {
 		this(annotation.type(), annotation.home(), annotation.port(), annotation.configs(), annotation.cache());
 	}
 
-	public ServerMetadata(ServerType type, String serverHome, int port, String[] configs, CacheInstance cache) {
+	public ServerMetadata(ServerType type, String serverHome, int port, String[] configs, CacheScope cache) {
 		if (type == null) {
 			throw new IllegalArgumentException("Null ServerType");
 		}
@@ -66,7 +66,7 @@ public class ServerMetadata {
 		return configs;
 	}
 
-	public CacheInstance getCache() {
+	public CacheScope getCache() {
 		return cache;
 	}
 

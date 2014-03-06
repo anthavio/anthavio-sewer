@@ -3,7 +3,7 @@ package net.anthavio.sewer.test;
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerInstanceManager;
 import net.anthavio.sewer.ServerMetadata;
-import net.anthavio.sewer.ServerMetadata.CacheInstance;
+import net.anthavio.sewer.ServerMetadata.CacheScope;
 import net.anthavio.sewer.ServerType;
 
 import org.junit.rules.TestRule;
@@ -38,18 +38,18 @@ public class SewerRule implements TestRule {
 	private ServerInstance server;
 
 	public SewerRule(ServerType type, String home) {
-		this(type, home, -1, null, CacheInstance.ALLWAYS);
+		this(type, home, -1, null, CacheScope.JVM);
 	}
 
 	public SewerRule(ServerType type, String home, int port) {
-		this(type, home, port, null, CacheInstance.ALLWAYS);
+		this(type, home, port, null, CacheScope.JVM);
 	}
 
-	public SewerRule(ServerType type, String home, int port, CacheInstance cache) {
+	public SewerRule(ServerType type, String home, int port, CacheScope cache) {
 		this(type, home, port, null, cache);
 	}
 
-	public SewerRule(ServerType type, String home, int port, String[] configs, CacheInstance cache) {
+	public SewerRule(ServerType type, String home, int port, String[] configs, CacheScope cache) {
 		this.metadata = new ServerMetadata(type, home, port, configs, cache);
 	}
 

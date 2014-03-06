@@ -10,7 +10,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.anthavio.sewer.ServerMetadata.CacheInstance;
+import net.anthavio.sewer.ServerMetadata.CacheScope;
 
 /**
  * Managed server configuration annotation
@@ -42,7 +42,7 @@ public @interface ServerConfig {
 	/**
 	 * @return how to cache instance between tests
 	 */
-	CacheInstance cache() default CacheInstance.ALLWAYS;
+	CacheScope cache() default CacheScope.JVM;
 
 	/**
 	 * <ul>

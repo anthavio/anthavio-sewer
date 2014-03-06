@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerMetadata;
-import net.anthavio.sewer.ServerMetadata.CacheInstance;
+import net.anthavio.sewer.ServerMetadata.CacheScope;
 import net.anthavio.sewer.ServerType;
 
 import org.mortbay.jetty.Connector;
@@ -119,7 +119,7 @@ public class Jetty6Wrapper implements ServerInstance {
 			//System.setProperty("jetty.port", String.valueOf(port));
 			properties.put("jetty.port", port);
 		}
-		this.metadata = new ServerMetadata(ServerType.JETTY6, jettyHome, port, configs, CacheInstance.ALLWAYS);
+		this.metadata = new ServerMetadata(ServerType.JETTY6, jettyHome, port, configs, CacheScope.JVM);
 		this.server = configure(this.configs);
 	}
 

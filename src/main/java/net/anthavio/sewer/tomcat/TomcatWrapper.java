@@ -2,7 +2,7 @@ package net.anthavio.sewer.tomcat;
 
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerMetadata;
-import net.anthavio.sewer.ServerMetadata.CacheInstance;
+import net.anthavio.sewer.ServerMetadata.CacheScope;
 import net.anthavio.sewer.ServerType;
 
 import org.apache.catalina.startup.Catalina;
@@ -28,7 +28,7 @@ public class TomcatWrapper implements ServerInstance {
 		System.setProperty("catalina.base", catalinaBase);
 		catalina = new Catalina();
 		catalina.load();
-		this.metadata = new ServerMetadata(ServerType.TOMCAT, catalinaBase, -1, null, CacheInstance.ALLWAYS);
+		this.metadata = new ServerMetadata(ServerType.TOMCAT, catalinaBase, -1, null, CacheScope.JVM);
 	}
 
 	public TomcatWrapper(ServerMetadata metadata) {
