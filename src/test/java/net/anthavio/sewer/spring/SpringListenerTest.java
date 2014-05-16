@@ -7,7 +7,7 @@ import net.anthavio.sewer.ServerType;
 import net.anthavio.sewer.test.SewerSpringListener;
 import net.anthavio.spring.test.ContextRefLoader;
 
-import org.fest.assertions.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;

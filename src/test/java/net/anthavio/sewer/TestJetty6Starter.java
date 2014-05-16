@@ -2,7 +2,7 @@ package net.anthavio.sewer;
 
 import net.anthavio.sewer.jetty.Jetty6Wrapper;
 
-import org.fest.assertions.api.Assertions;
+import org.assertj.core.api.Assertions;
 
 /**
  * Jetty 6 main class

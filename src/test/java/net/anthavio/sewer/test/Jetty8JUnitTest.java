@@ -5,7 +5,7 @@ import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerPort;
 import net.anthavio.sewer.ServerType;
 
-import org.fest.assertions.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

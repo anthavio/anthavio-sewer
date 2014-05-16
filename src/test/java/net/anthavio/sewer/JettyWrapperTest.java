@@ -10,7 +10,7 @@ import junit.framework.Assert;
 import net.anthavio.sewer.jetty.Jetty6Wrapper;
 import net.anthavio.sewer.jetty.JettyWrapper;
 
-import org.fest.assertions.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 /**

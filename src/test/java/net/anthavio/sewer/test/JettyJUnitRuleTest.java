@@ -3,7 +3,7 @@ package net.anthavio.sewer.test;
 import net.anthavio.sewer.ServerMetadata.CacheScope;
 import net.anthavio.sewer.ServerType;
 
-import org.fest.assertions.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
