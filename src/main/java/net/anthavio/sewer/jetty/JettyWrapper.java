@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServlet;
+
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerMetadata;
 import net.anthavio.sewer.ServerMetadata.CacheScope;
@@ -16,6 +18,7 @@ import net.anthavio.sewer.ServerType;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
@@ -130,6 +133,38 @@ public class JettyWrapper implements ServerInstance {
 
 	public JettyWrapper(ServerMetadata metadata) {
 		this(metadata.getServerHome(), metadata.getPort(), metadata.getConfigs());
+	}
+
+	/**
+	 * Single servlet Jetty with dynamically allocated port
+	 */
+	public JettyWrapper(HttpServlet servlet) {
+		this(0, servlet);
+	}
+
+	public JettyWrapper(int port, HttpServlet servlet) {
+		this(port, "/", "/*", servlet);
+	}
+
+	/**
+	 * @param port - 0 means dynamic allocated port
+	 * @param rootContextPath - "/" default
+	 * @param servletPathSpec - "/*" default
+	 * @param servlet
+	 */
+	public JettyWrapper(int port, String rootContextPath, String servletPathSpec, HttpServlet servlet) {
+		server = new Server(port);
+		server.setStopAtShutdown(true);
+
+		ServletContextHandler rootContext = new ServletContextHandler(server, rootContextPath);
+		ServletHolder servletHolder = new ServletHolder(servlet);
+		rootContext.addServlet(servletHolder, servletPathSpec);
+		server.setHandler(rootContext);
+
+		configs = new String[0];
+		jettyHome = null;
+		jettyLogs = null;
+		metadata = null;
 	}
 
 	@Override
@@ -319,26 +354,6 @@ public class JettyWrapper implements ServerInstance {
 		return nconnectors.toArray(new Connector[nconnectors.size()]);
 	}
 
-	/*
-		protected int getLocalPort(Server server) {
-			Connector[] connectors = server.getConnectors();
-			if (connectors == null || connectors.length == 0) {
-				throw new IllegalStateException("Cannot find port. No connector is configured for server");
-			}
-			//use port of the first connector
-			int port = connectors[0].getLocalPort();
-
-			//warn if more is found
-			if (connectors.length > 1) {
-				List<Integer> ports = new LinkedList<Integer>();
-				for (Connector connector : connectors) {
-					ports.add(connector.getLocalPort());
-				}
-				log.info("Multile connectors configured. Ports " + ports);
-			}
-			return port;
-		}
-	*/
 	/**
 	 * WebAppContext initialization exceptions are swallowed.
 	 * 

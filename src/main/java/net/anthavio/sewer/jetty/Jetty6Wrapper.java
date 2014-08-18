@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServlet;
+
 import net.anthavio.sewer.ServerInstance;
 import net.anthavio.sewer.ServerMetadata;
 import net.anthavio.sewer.ServerMetadata.CacheScope;
@@ -12,6 +14,7 @@ import net.anthavio.sewer.ServerType;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
@@ -125,6 +128,38 @@ public class Jetty6Wrapper implements ServerInstance {
 
 	public Jetty6Wrapper(ServerMetadata metadata) {
 		this(metadata.getServerHome(), metadata.getPort(), metadata.getConfigs());
+	}
+
+	/**
+	 * Single servlet Jetty with dynamically allocated port
+	 */
+	public Jetty6Wrapper(HttpServlet servlet) {
+		this(0, servlet);
+	}
+
+	public Jetty6Wrapper(int port, HttpServlet servlet) {
+		this(port, "/", "/*", servlet);
+	}
+
+	/**
+	 * @param param port - 0 means dynamic allocated port
+	 * @param rootContextPath - "/" default
+	 * @param servletPathSpec - "/*" default
+	 * @param servlet
+	 */
+	public Jetty6Wrapper(int port, String rootContextPath, String servletPathSpec, HttpServlet servlet) {
+		server = new Server(port);
+		server.setStopAtShutdown(true);
+
+		Context rootContext = new Context(server, rootContextPath, Context.SESSIONS);
+		ServletHolder servletHolder = new ServletHolder(servlet);
+		rootContext.addServlet(servletHolder, servletPathSpec);
+		server.setHandler(rootContext);
+
+		configs = new String[0];
+		jettyHome = null;
+		jettyLogs = null;
+		metadata = null;
 	}
 
 	@Override
