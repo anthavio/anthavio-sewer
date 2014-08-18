@@ -19,7 +19,7 @@
 	
 	<properties>
 		<jetty6.version>6.1.26</jetty6.version>
-		<jetty.version>8.1.13.v20130916</jetty.version><!-- 9.1.1.v20140108 --> <!-- 8.1.13.v20130916 -->
+		<jetty.version>8.1.15.v20140411</jetty.version><!-- 9.1.1.v20140108 --> <!-- 8.1.13.v20130916 -->
 		<tomcat.version>7.0.30</tomcat.version>
 		<spring.version>3.1.4.RELEASE</spring.version>
 	</properties>

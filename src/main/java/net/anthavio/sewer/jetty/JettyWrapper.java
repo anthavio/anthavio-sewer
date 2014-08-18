@@ -259,29 +259,31 @@ public class JettyWrapper implements ServerInstance {
 	/**
 	 * Issue here is getLocalPort() method was moved in Jetty 9 
 	 * 
-	 * Jetty 7 an 8 has it on org.eclipse.jetty.server.Connector interface
-	 * Jetty 9 has redesigned Connector hierarchy and method is now on new org.eclipse.jetty.server.NetworkConnector interface
+	 * Jetty 7 an 8 has getLocalPort() on org.eclipse.jetty.server.Connector interface
+	 * 
+	 * Jetty 9 has redesigned Connector hierarchy and getLocalPort() method 
+	 * is now on new org.eclipse.jetty.server.NetworkConnector interface (which extends original Connector)
 	 */
 	protected int[] getLocalPorts(Server server) {
-		Class<?> cConnector;
+		Class<?> clazz;
 		Method mGetLocalPort;
-		boolean jetty9;
+		boolean jetty9 = false;
 		try {
-			cConnector = Class.forName("org.eclipse.jetty.server.NetworkConnector");
+			clazz = Class.forName("org.eclipse.jetty.server.NetworkConnector");
 			jetty9 = true;
 		} catch (ClassNotFoundException cnx) {
-			cConnector = Connector.class; //jetty 8
-			jetty9 = false;
+			clazz = Connector.class; //jetty 8
 		}
+		//method getLocalPort() muste exist on connector class
 		try {
-			mGetLocalPort = cConnector.getMethod("getLocalPort");
+			mGetLocalPort = clazz.getMethod("getLocalPort");
 		} catch (Exception x) {
-			throw new RuntimeException("Cannot find getLocalPort() method on " + cConnector);
+			throw new RuntimeException("Cannot find getLocalPort() method on " + clazz);
 		}
 
 		Connector[] connectors;
 		if (jetty9) {
-			connectors = getNetworkConnectors(server, cConnector);
+			connectors = getJetty9Connectors(server, clazz);
 		} else {
 			connectors = server.getConnectors();
 		}
@@ -289,32 +291,27 @@ public class JettyWrapper implements ServerInstance {
 		int[] ports = new int[connectors.length];
 		for (int i = 0; i < connectors.length; ++i) {
 			Connector connector = connectors[i];
-			ports[i] = getLocalPort(connector, mGetLocalPort);
+			try {
+				ports[i] = (Integer) mGetLocalPort.invoke(connector);
+			} catch (Exception x) {
+				throw new RuntimeException("getLocalPort() invocation failed on " + connector, x);
+			}
 		}
 		return ports;
-	}
-
-	private int getLocalPort(Connector connector, Method mGetLocalPort) {
-		try {
-			return (Integer) mGetLocalPort.invoke(connector);
-		} catch (Exception x) {
-			throw new RuntimeException("getLocalPort() invocation failed on " + connector, x);
-		}
 	}
 
 	/**
 	 * Jetty9 NetworkConnector hierarchy 
 	 * http://download.eclipse.org/jetty/stable-9/apidocs/org/eclipse/jetty/server/NetworkConnector.html 
 	 */
-	private Connector[] getNetworkConnectors(Server server, Class<?> connectorClass) {
+	private Connector[] getJetty9Connectors(Server server, Class<?> connectorClass) {
 		Connector[] connectors = server.getConnectors();
 		if (connectors == null || connectors.length == 0) {
 			throw new IllegalStateException("Cannot find port. No Connector is configured for server");
 		}
 		List<Connector> nconnectors = new ArrayList<Connector>();
 		for (Connector connector : connectors) {
-			System.out.println(connector + " " + connector.getClass());
-			//if(connector  instanceof NetworkConnector)
+			//if(connector instanceof NetworkConnector)
 			if (connectorClass.isAssignableFrom(connector.getClass())) {
 				nconnectors.add(connector);
 			}
