@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.anthavio.maven</groupId>
 		<artifactId>anthavio-super-pom</artifactId>
-		<version>1</version>
+		<version>3</version>
 	</parent>
 	
 	<groupId>net.anthavio</groupId>
@@ -14,10 +14,31 @@
 	<packaging>jar</packaging>
 	
 	<name>anthavio-sewer</name>
-	
 	<description>Anthavio Server Embedder</description>
+	<inceptionYear>2011</inceptionYear>
+	
+	<url>http://anthavio.github.com/anthavio-sewer</url>
+	
+	<scm>
+		<connection>scm:git:git://github.com/anthavio/anthavio-sewer.git</connection>
+		<developerConnection>scm:git:git@github.com:anthavio/anthavio-sewer.git</developerConnection>
+		<url>https://github.com/anthavio/anthavio-sewer</url>
+	</scm>
+  
+ 	<developers>
+		<developer>
+			<id>anthavio</id>
+			<name>Martin Vanek</name>
+			<email>anthavio@post.cz</email>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+		</developer>
+	</developers>
 	
 	<properties>
+		<project.build.java.target>1.6</project.build.java.target>
+		
 		<jetty6.version>6.1.26</jetty6.version>
 		<jetty.version>8.1.15.v20140411</jetty.version><!-- 9.1.1.v20140108 --> <!-- 8.1.13.v20130916 -->
 		<tomcat.version>7.0.30</tomcat.version>
@@ -29,7 +50,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
+			<version>1.7.7</version>
 		</dependency>
 		
 		<!-- Jetty 7/8/9 -->
@@ -102,7 +123,7 @@
 		
 		<!-- 
 			Minimal Junit version with @Rule support is 4.9 (3 years old) 
-			We use 4.11 here because out test of test requires @FixMethodOrder from 4.11
+			We use 4.11 here because our test of test requires @FixMethodOrder from 4.11
 		-->
 		
 		<dependency>
@@ -176,7 +197,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>1.6.0</version>
+			<version>1.6.1</version>
 			<scope>test</scope>
 		</dependency>
 		
